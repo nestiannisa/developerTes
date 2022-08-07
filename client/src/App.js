@@ -18,56 +18,13 @@ function App() {
   const dispatch = useDispatch();
 
   const dats = JSON.stringify(showReportResult);
-console.log("dats", dats)
+  console.log("dats", dats);
   useEffect(() => {
     dispatch(showReport());
     dispatch(showReportSum());
     dispatch(showReportArea());
   }, [dispatch]);
 
-  const data = {
-    labels: ["DKI jakarta", "Jawa Barat", "Kalimantan", "Jawa Tengah", "Bali"],
-    datasets: [
-      {
-        label: "data",
-        data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: false,
-            min: 0,
-            stepSize: 2,
-            callback: function (value) {
-              return `${value}`;
-            },
-          },
-        },
-      ],
-    },
-  };
   const [selects, setSelects] = useState(" ");
   const [area, setArea] = useState(" ");
 
@@ -78,9 +35,9 @@ console.log("dats", dats)
 
   const [dateFilter, setDateFilter] = useState({
     startDate: null,
-    endDate: null
-  })
-console.log(dateFilter)
+    endDate: null,
+  });
+  console.log(dateFilter);
   return (
     <div className="container_app">
       <h1>Report Data</h1>
@@ -91,19 +48,74 @@ console.log(dateFilter)
           type="text"
         ></input>
         <label>start date:</label>
-        <input 
-        onChange={(event) => setDateFilter({...dateFilter, startDate: event.target.value})}
-        type="date"></input>
+        <input
+          onChange={(event) =>
+            setDateFilter({ ...dateFilter, startDate: event.target.value })
+          }
+          type="date"
+        ></input>
         <label>until:</label>
-        <input 
-        onChange={(event) => setDateFilter({...dateFilter, endDate: event.target.value})}
-        type="date"></input>
+        <input
+          onChange={(event) =>
+            setDateFilter({ ...dateFilter, endDate: event.target.value })
+          }
+          type="date"
+        ></input>
         <button className="btn_search" onClick={(event) => handleSubmit(event)}>
           {" "}
           Search
         </button>
       </div>
-      <Bar data={data} height={50} options={chartOptions} />
+      {showReportAreaResult ? (
+        showReportAreaResult.map((a) => {
+          const data = {
+            labels: [a.Store.Store_Area.area_name],
+            datasets: [
+              {
+                label: "data",
+                data: [a.compliance],
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                  "rgba(255, 159, 64, 0.2)",
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          };
+
+          const chartOptions = {
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: false,
+                    min: 0,
+                    stepSize: 2,
+                    callback: function (value) {
+                      return `${value}`;
+                    },
+                  },
+                },
+              ],
+            },
+          };
+          return <Bar data={data} height={50} options={chartOptions} />;
+        })
+      ) : (
+        <></>
+      )}
 
       <table className="styled-table">
         <thead>
@@ -151,15 +163,15 @@ console.log(dateFilter)
                   }
                 })
                 //.filter(row => {
-                 // let filterPass = true
-                 // const date = new Date(row.dateYouWannaFilterWith)
-                  //if (dateFilter.startDate) {
-                    //filterPass = filterPass && (new Date(dateFilter.startDate) < date)
-                 // }
-                  //if (dateFilter.endDate) {
-                    //filterPass = filterPass && (new Date(dateFilter.endDate) > date)
-                  //}
-                  //return filterPass
+                // let filterPass = true
+                // const date = new Date(row.dateYouWannaFilterWith)
+                //if (dateFilter.startDate) {
+                //filterPass = filterPass && (new Date(dateFilter.startDate) < date)
+                // }
+                //if (dateFilter.endDate) {
+                //filterPass = filterPass && (new Date(dateFilter.endDate) > date)
+                //}
+                //return filterPass
                 //})
                 .map((report) => {
                   console.log("F", rowArea);
