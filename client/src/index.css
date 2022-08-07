@@ -16,6 +16,33 @@ code {
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
-  min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  border-radius: 10px;
+}
+
+.styled-table td {
+  text-align: center;
+}
+
+.styled-table th{
+  background-color: aqua;
+}
+
+
+.container_app{
+  padding: 30px 50px;
+}
+
+.menu_search input{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.btn_search{
+  background-color: aqua;
+  border-radius: 8px;
+  border: none;
+  padding: 8px 13px;
+  cursor: pointer;
 }

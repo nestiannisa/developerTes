@@ -47,19 +47,18 @@ class ReportProductController {
             // if obj store is already in new array, increase sum
             if (
               o.Store.Store_Area.area_name == cur.Store.Store_Area.area_name
-            ) {
-              o.compliance += cur.compliance;
-              inAcc = true;
+              ) {
+                o.compliance += cur.compliance;
+                inAcc = true;
+              }
             }
+          });
+          if (!inAcc) {
+            acc.push(cur); // if obj store isn't already in new array, add it
           }
-        });
-        if (!inAcc) {
-          acc.push(cur); // if obj store isn't already in new array, add it
-        }
-        return acc;
-      }, []);
+          return acc;
+        }, []);
       //const sum = (summedResponse/144)*100
-
       res.status(200).json(summedResponse);
     } catch (err) {
       res.status(500).json(err);

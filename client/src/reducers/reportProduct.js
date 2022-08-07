@@ -1,4 +1,4 @@
-import { SHOW_REPORT, SHOW_SUM, SHOW_AREA } from "../action/reportProductAction";
+import { SHOW_REPORT, SHOW_SUM, SHOW_AREA, SHOW_GRAPH } from "../action/reportProductAction";
 
 let initialState = {
   showReportResult: false,
@@ -12,6 +12,19 @@ let initialState = {
   showReportAreaResult: false,
   showReportAreaLoading: false,
   showReportAreaError: false,
+
+  showReportGraphResult: {
+    labels: [],
+    datasets: [{
+      label: "BTC",
+      data: [],
+      backgroundColor: 'rgba(238,175,0, 0.4)',
+      borderColor: 'rgba(238,175,0, 0.5)',
+      pointBorderColor: 'rgba(238,175,0, 0.7)'
+    }]
+  },
+  showReportGraphLoading: false,
+  showReportGraphError: false,
 };
 
 const reportProduct = (state = initialState, action) => {
@@ -36,6 +49,23 @@ const reportProduct = (state = initialState, action) => {
       return {
         ...state,
         showReportAreaResult: action.payload.data,
+        showReportAreaLoading: action.payload.loading,
+        showReportAreaError: action.payload.errorMessage,
+      };
+    
+    case SHOW_GRAPH:
+      return {
+        ...state,
+        showReportAreaResult: {
+          labels: action.payload.labels,
+          datasets: [{
+            label: "BTC",
+            data: action.payload.data,
+            backgroundColor: 'rgba(238,175,0, 0.4)',
+            borderColor: 'rgba(238,175,0, 0.5)',
+            pointBorderColor: 'rgba(238,175,0, 0.7)'
+          }]
+        },
         showReportAreaLoading: action.payload.loading,
         showReportAreaError: action.payload.errorMessage,
       };

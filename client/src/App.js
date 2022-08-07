@@ -6,6 +6,7 @@ import {
   showReport,
   showReportSum,
   showReportArea,
+  showReportGraph,
 } from "./action/reportProductAction";
 
 function App() {
@@ -23,15 +24,9 @@ function App() {
     dispatch(showReportSum());
     dispatch(showReportArea());
   }, [dispatch]);
-  const datas = showReportAreaResult;
-  console.log("s", datas);
-  //const [datas, setDatas] = useState(showReportAreaResult)
-  const array = Object.entries(datas);
 
-  const objFromArray = Object.fromEntries(array);
-  console.log("sa", objFromArray.StoreId);
   const data = {
-    labels: [objFromArray],
+    labels: ["D"],
     datasets: [
       {
         label: "data",
@@ -73,24 +68,40 @@ function App() {
       ],
     },
   };
-
-  const [koko, setKoko] = useState();
-
   const [selects, setSelects] = useState(" ");
   const [area, setArea] = useState(" ");
-  console.log("Sas",selects)
-  const [selected, setSelected] = useState(" ");
 
-  const handleSubmit = (event) =>{
+  const handleSubmit = (event) => {
     event.preventDefault();
     setSelects(area);
-  }
+  };
+
+  const [dateFilter, setDateFilter] = useState({
+    startDate: null,
+    endDate: null
+  })
+console.log(dateFilter)
   return (
-    <div>
+    <div className="container_app">
       <h1>Report Data</h1>
       <div className="menu_search">
-        <input value={area} onChange={(event) => setArea(event.target.value)} ></input>
-        <button onClick={(event) => handleSubmit(event) }> Search</button>
+        <input
+          value={area}
+          onChange={(event) => setArea(event.target.value)}
+          type="text"
+        ></input>
+        <label>start date:</label>
+        <input 
+        onChange={(event) => setDateFilter({...dateFilter, startDate: event.target.value})}
+        type="date"></input>
+        <label>until:</label>
+        <input 
+        onChange={(event) => setDateFilter({...dateFilter, endDate: event.target.value})}
+        type="date"></input>
+        <button className="btn_search" onClick={(event) => handleSubmit(event)}>
+          {" "}
+          Search
+        </button>
       </div>
       <Bar data={data} height={50} options={chartOptions} />
 
@@ -100,20 +111,24 @@ function App() {
             <th> Brand</th>
             {showReportAreaResult ? (
               showReportAreaResult
-              .filter((area) => {
-                if(area.Store.Store_Area.area_name.includes(selects)){
-                  return area;
-                }else if(selects === ""){
-                  return area;
-                }
-              })
-              .map((report) => {
-                return (
-                  <>
-                    <th>{report.Store.Store_Area.area_name}</th>
-                  </>
-                );
-              })
+                .filter((area) => {
+                  if (
+                    area.Store.Store_Area.area_name
+                      .toLowerCase()
+                      .includes(selects.toLowerCase())
+                  ) {
+                    return area;
+                  } else if (selects === " ") {
+                    return area;
+                  }
+                })
+                .map((report) => {
+                  return (
+                    <>
+                      <th>{report.Store.Store_Area.area_name}</th>
+                    </>
+                  );
+                })
             ) : (
               <></>
             )}
@@ -124,27 +139,42 @@ function App() {
             <td>ROTI TAWAR</td>
             {showReportSumResult ? (
               showReportSumResult
-              .filter((area) => {
-                if(area.Store.Store_Area.area_name.includes(selects)){
-                  return area;
-                }else if(selects === ""){
-                  return area;
-                }
-              })
-              .map((report) => {
-                console.log("F", letk);
-                const kom = (report.compliance / 31) * 100;
-
-                return (
-                  <>
-                    {report.Product.Brand.brand_name === "ROTI TAWAR" ? (
-                      <td>{kom}%</td>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                );
-              })
+                .filter((area) => {
+                  if (
+                    area.Store.Store_Area.area_name
+                      .toLowerCase()
+                      .includes(selects.toLowerCase())
+                  ) {
+                    return area;
+                  } else if (selects === " ") {
+                    return area;
+                  }
+                })
+                //.filter(row => {
+                 // let filterPass = true
+                 // const date = new Date(row.dateYouWannaFilterWith)
+                  //if (dateFilter.startDate) {
+                    //filterPass = filterPass && (new Date(dateFilter.startDate) < date)
+                 // }
+                  //if (dateFilter.endDate) {
+                    //filterPass = filterPass && (new Date(dateFilter.endDate) > date)
+                  //}
+                  //return filterPass
+                //})
+                .map((report) => {
+                  console.log("F", letk);
+                  const kom = (report.compliance / letk) * 100;
+                  const hasil = kom.toFixed(2);
+                  return (
+                    <>
+                      {report.Product.Brand.brand_name === "ROTI TAWAR" ? (
+                        <td>{hasil}%</td>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  );
+                })
             ) : (
               <></>
             )}
@@ -153,27 +183,31 @@ function App() {
             <td>SUSU KALENG</td>
             {showReportSumResult ? (
               showReportSumResult
-              .filter((area) => {
-                if(area.Store.Store_Area.area_name.includes(selects)){
-                  return area;
-                }else if(selects === ""){
-                  return area;
-                }
-              })
-              .map((report) => {
-                console.log("F", letk);
-                const kom = (report.compliance / 31) * 100;
-
-                return (
-                  <>
-                    {report.Product.Brand.brand_name === "SUSU KALENG" ? (
-                      <td>{kom}%</td>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                );
-              })
+                .filter((area) => {
+                  if (
+                    area.Store.Store_Area.area_name
+                      .toLowerCase()
+                      .includes(selects.toLowerCase())
+                  ) {
+                    return area;
+                  } else if (selects === " ") {
+                    return area;
+                  }
+                })
+                .map((report) => {
+                  console.log("F", letk);
+                  const kom = (report.compliance / letk) * 100;
+                  const hasil = kom.toFixed(2);
+                  return (
+                    <>
+                      {report.Product.Brand.brand_name === "SUSU KALENG" ? (
+                        <td>{hasil}%</td>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  );
+                })
             ) : (
               <></>
             )}
