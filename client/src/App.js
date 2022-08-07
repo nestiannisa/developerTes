@@ -13,12 +13,12 @@ function App() {
   const { showReportResult, showReportSumResult, showReportAreaResult } =
     useSelector((state) => state.reportProduct);
 
-  const letk = showReportResult.length;
+  const rowArea = showReportResult.length;
 
   const dispatch = useDispatch();
 
-  console.log(showReportResult.id);
-
+  const dats = JSON.stringify(showReportResult);
+console.log("dats", dats)
   useEffect(() => {
     dispatch(showReport());
     dispatch(showReportSum());
@@ -26,7 +26,7 @@ function App() {
   }, [dispatch]);
 
   const data = {
-    labels: ["D"],
+    labels: ["DKI jakarta", "Jawa Barat", "Kalimantan", "Jawa Tengah", "Bali"],
     datasets: [
       {
         label: "data",
@@ -162,8 +162,8 @@ console.log(dateFilter)
                   //return filterPass
                 //})
                 .map((report) => {
-                  console.log("F", letk);
-                  const kom = (report.compliance / letk) * 100;
+                  console.log("F", rowArea);
+                  const kom = (report.compliance / rowArea) * 100;
                   const hasil = kom.toFixed(2);
                   return (
                     <>
@@ -195,8 +195,8 @@ console.log(dateFilter)
                   }
                 })
                 .map((report) => {
-                  console.log("F", letk);
-                  const kom = (report.compliance / letk) * 100;
+                  console.log("F", rowArea);
+                  const kom = (report.compliance / rowArea) * 100;
                   const hasil = kom.toFixed(2);
                   return (
                     <>
